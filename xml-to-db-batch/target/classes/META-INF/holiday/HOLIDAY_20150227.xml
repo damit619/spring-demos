@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataexport product="holiday" filetype="full" filedate="20150227">
+<holiday>
+	<tag>HF</tag>
+	<modification_flag>A</modification_flag>
+	<country_code>NO</country_code>
+	<country_name>NORWAY</country_name>
+	<date>20150201</date>
+	<holyday_type>H</holyday_type>
+</holiday>
+<holiday>
+	<tag>HF</tag>
+	<modification_flag>D</modification_flag>
+	<country_code>AD</country_code>
+	<country_name>ANDORRA</country_name>
+	<date>20150207</date>
+	<holyday_type>W</holyday_type>
+</holiday>
+<holiday>
+	<tag>HF</tag>
+	<modification_flag>A</modification_flag>
+	<country_code>AD</country_code>
+	<country_name>ANDORRA</country_name>
+	<date>20150406</date>
+	<holyday_type>H</holyday_type>
+</holiday>
+</dataexport>

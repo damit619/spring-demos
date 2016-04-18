@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<description>
+		Job (HolidayFullFile) to load full flat file into PBD needs
+		file path, start date and version (optional - default will be 1)
+		extracted from file name.
+	</description>
+
+	<import resource="classpath:/META-INF/spring/batch-common-context.xml" />
+	<import resource="classpath:/META-INF/spring/holiday-dao-context.xml" />
+	<!-- remove this -->
+	<!-- <import resource="classpath:META-INF/spring/wbrule-dao-context.xml" /> -->
+
+	<context:component-scan base-package="org.javatigers.spbatch.holiday.batch" />
+
+	<batch:job id="loadHolidayFullFile" restartable="true">
+		<batch:validator>
+			<bean
+				class="org.springframework.batch.core.job.DefaultJobParametersValidator">
+				<property name="requiredKeys" value="inputFile,fileType,date" />
+			</bean>
+		</batch:validator>
+		<batch:step id="processHolidayFullFile" next="updateHolidayFullFileLoadStatus">
+			<batch:tasklet>
+				<batch:chunk commit-interval="${huge.batch.commit.interval}" skip-limit="${huge.batch.skip.limit}">
+					<batch:skippable-exception-classes>
+						<batch:include class="java.lang.Exception" />
+						<batch:exclude
+							class="java.lang.RuntimeException" />
+						<batch:exclude class="org.springframework.oxm.XmlMappingException" />
+					</batch:skippable-exception-classes>
+					<batch:listeners>
+						<batch:listener ref="holidayFileLoadListener" />
+					</batch:listeners>
+					<batch:reader>
+						<ref bean="holidayFullFileReaderVtd" />
+					</batch:reader>
+					<batch:processor>
+						<ref bean="holidayFullFileProcessor" />
+					</batch:processor>
+					<batch:writer>
+						<ref bean="holidayFullFileWriter" />
+					</batch:writer>
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+		<batch:step id="updateHolidayFullFileLoadStatus">
+			<batch:tasklet ref="holidayFullFileLoadStatusUpdater" />
+		</batch:step>
+	</batch:job>
+
+	<bean id="holidayFullFileReaderStax" class="org.springframework.batch.item.xml.StaxEventItemReader" scope="step">
+		<property name="fragmentRootElementName" value="holiday" />
+		<property name="resource" value="#{jobParameters['inputFile']}" />
+		<property name="unmarshaller" ref="holidayFullFileMarshaller" />
+	</bean>
+	<bean id="holidayFullFileReaderVtd" class="org.javatigers.spbatch.holiday.batch.HolidayFileReader" scope="step">
+		<property name="fragmentElementName" value="holiday" />
+		<property name="filePath" value="#{jobParameters['inputFile']}" />
+		<property name="normalizeFilePath" value="true" />
+	</bean>
+
+	<!-- <bean id="oracleMetricsContextResolver"
+		class="org.javatigers.spbatch.holiday.batch.BatchContextResolver">
+		<property name="module" value="PBD_BATCH" />
+		<property name="action" value="HOLIDAY_FULL" />
+	</bean> -->
+</beans>

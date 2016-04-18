@@ -1,0 +1,17 @@
+create user in oracle which actualy a database like in mysql
+
+Steps:-
+CONNECT javatiger/javatiger@localhost:1521/XE
+
+ALTER USER javatiger IDENTIFIED BY javatiger
+
+1 first connect to plsql using scott and tiger
+2 connect to sys as sysdba using command "CONNECT SYS AS SYSDBA"
+3 now create user which is user in oracle and database in mysql using command "create user user_name identified by user_password"
+4 Grant permission to newly create user or database.
+	I. Grant permission to user to create session using command "GRANT CREATE SESSION TO user_name"
+	II. Grant permission to user to create tables using command "GRANT CREATE TABLE TO user_name"
+5 The last step is to ALTER the user to provide a table to users to create table in oracle database;
+using command ALTER USER user_name QUOTA UNLIMITED ON USERS;
+
+select min(emp_salary) from (select emp_salary from salary order by emp_salary desc) where rownum <=8

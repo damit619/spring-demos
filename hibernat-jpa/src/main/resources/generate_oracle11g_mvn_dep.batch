@@ -1,0 +1,1 @@
+mvn -s D:\apache-maven-3.2.5\conf\settings.xml install:install-file -Dfile=D:\ora_11g_loc\app\oracle\product\11.2.0\server\jdbc\lib\ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11g -Dpackaging=jar

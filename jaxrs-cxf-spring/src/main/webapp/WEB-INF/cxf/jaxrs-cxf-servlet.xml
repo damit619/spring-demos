@@ -1,0 +1,56 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+         http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+	<import resource="classpath:/META-INF/cxf/cxf.xml"/>
+	<!--only pick services annotated with PbdRsService -->
+	<context:component-scan base-package="org.javatigers.jaxrs.srv.ws.services" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.javatigers.jaxrs.srv.ws.JAXRSService" />
+	</context:component-scan>
+	<context:annotation-config />
+	<jaxrs:server address="/v1">
+		<jaxrs:features>
+			<bean class="org.apache.cxf.metrics.MetricsFeature" />
+			<bean class="org.apache.cxf.ext.logging.LoggingFeature">
+				<property name="prettyLogging" value="false" />
+			</bean>
+			<!-- support swagger 2.0 spec https://issues.apache.org/jira/browse/CXF-6555 -->
+			<bean class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
+				<!-- run as filter so it is not denied by our own access filters -->
+				<property name="runAsFilter" value="true"/>
+				<property name="basePath" value="jaxrs-cxf/api/v1" />
+					<property name="contact" value="${swagger.contact}" />
+				<property name="license" value="" />
+				<property name="licenseUrl" value="" />
+				<property name="resourcePackage" value="org.javatigers.jaxrs.srv.ws.services"/>
+				<property name="title" value="${swagger.title}" />
+				<property name="description" value="${swagger.description}" />
+			</bean>
+			<bean class="org.apache.cxf.validation.BeanValidationFeature">
+				<property name="provider">
+					<bean class="org.apache.cxf.validation.BeanValidationProvider">
+						<constructor-arg ref="validatorFactory" />
+					</bean>
+				</property>
+			</bean>
+		</jaxrs:features>
+		<jaxrs:providers>
+			<ref bean="serviceExceptionMapper"/>
+			<ref bean="webApplicationExceptionMapper" />
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+		<jaxrs:serviceBeans>
+			<ref bean="message10RS"/>
+		</jaxrs:serviceBeans>
+	</jaxrs:server>
+	<bean id="webApplicationExceptionMapper" class="org.apache.cxf.jaxrs.impl.WebApplicationExceptionMapper">
+		<property name="printStackTrace" value="true" />
+		<property name="addMessageToResponse" value="false" />
+	</bean>
+</beans>

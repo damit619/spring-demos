@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<definition name="main-template" template="/WEB-INF/views/templates/mainTemplate.jsp">
+		<put-attribute name="browser-title" value="Social-Integ" type="string" />
+		<put-attribute name="header-content" value="/WEB-INF/views/templates/header.jsp" />
+		<put-attribute name="section-title" value="Dashboard" type="string" />
+		<put-attribute name="contentOnly" value="" />
+		<put-attribute name="left-nav-bar" value="/WEB-INF/views/templates/leftNavigation.jsp" />
+		<put-attribute name="footer-content" value="/WEB-INF/views/templates/footer.jsp" />
+		<put-attribute name="show-menu-name" value="dashboardMenu" type="string" />
+	</definition>
+	<!-- INDEX page -->
+	<definition name="home" extends="main-template">
+		<put-attribute name="contentOnly" value="/WEB-INF/views/home.jsp" />
+	</definition>
+</tiles-definitions>

@@ -1,0 +1,5 @@
+INSERT INTO `oauth_client_details` (`client_id`, `access_token_validity`, `additional_information`, `authorities`, `authorized_grant_types`, `autoapprove`, `client_secret`, `refresh_token_validity`, `resource_ids`, `scope`, `web_server_redirect_uri`) VALUES
+	('appclient', NULL, NULL, 'ROLE_API', 'password,refresh_token', NULL, 'gfgh2EDFH43ugrfash!@EWR6497FGDFGHH7', NULL, NULL, 'read,write,trust', NULL);
+/
+INSERT INTO `oauth_client_details` (`client_id`, `access_token_validity`, `additional_information`, `authorities`, `authorized_grant_types`, `autoapprove`, `client_secret`, `refresh_token_validity`, `resource_ids`, `scope`, `web_server_redirect_uri`) VALUES
+	('dcclient', NULL, NULL, 'ROLE_POST,ROLE_CREATE_USER', 'password,refresh_token', NULL, 'fdsbgsfsRjhsdklfhAsfdj5be4Gsdkcx67eH83fYFDUYU', NULL, NULL, 'read,write,trust', NULL);

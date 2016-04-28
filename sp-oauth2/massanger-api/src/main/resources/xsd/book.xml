@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="urn:domain.messanger.javatigers.org" xmlns:tns="urn:domain.messanger.javatigers.org"
+	elementFormDefault="qualified" version="1">
+	<xsd:element name="BookType">
+		<xsd:annotation>
+			<xsd:documentation>book object with four attributes
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation>BookTypes to use.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:sequence>
+				<xsd:element name="bookId" type="xsd:int" />
+				<xsd:element name="bookName" type="xsd:string" />
+				<xsd:element name="author" type="xsd:string" />
+				<xsd:element name="category" type="xsd:string" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="BookListType">
+		<xsd:annotation>
+			<xsd:documentation>an object to contain lists of books referencing above Book object
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation>BookTypes list.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:sequence>
+				<xsd:element ref="tns:BookType" minOccurs="0" maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

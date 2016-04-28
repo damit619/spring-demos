@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:srv.javatigers.cp.com:domain:common:v1_0"
+	targetNamespace="urn:srv.javatigers.cp.com:domain:common:v1_0"
+	elementFormDefault="qualified" version="1">
+
+	<simpleType name="min1max15AlphaNumericType">
+		<annotation>
+			<documentation>This is just a restriction chosen which fits the
+				persistence model.It has no business meaning as such, and is just
+				chosen as a way to limit strings that are not otherwise restricted
+				by some business means.
+			</documentation>
+		</annotation>
+		<restriction base="string">
+			<pattern value="[a-zA-Z0-9]{1,15}"></pattern>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="min1max15AlphaNumericWithSpaceType">
+		<annotation>
+			<documentation>Allows alphabets (any case), numbers and space with
+				length 1 to 15
+			</documentation>
+		</annotation>
+		<restriction base="string">
+			<pattern value="[a-zA-Z0-9 ]{1,60}"></pattern>
+		</restriction>
+	</simpleType>
+	<simpleType name="min0DoubleNumericValue">
+		<annotation>
+			<documentation>
+				Double value 0.
+			</documentation>
+		</annotation>
+		<restriction base="double">
+			<pattern value="[0-9]{0}"></pattern>
+		</restriction>
+	</simpleType>
+	<simpleType name="contactPersonEmail">
+		<annotation>
+			<documentation>Describes the pattern for contact
+				person's email
+			</documentation>
+		</annotation>
+		<restriction base="string">
+			<pattern value=".+@.+\\.[a-z]+" />
+		</restriction>
+	</simpleType>
+</schema>

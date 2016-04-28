@@ -1,0 +1,103 @@
+{
+	"id": "5d698ee3-7efe-9fda-2987-99e55452acc2",
+	"name": "message-api-collections",
+	"description": "",
+	"order": [
+		"71c6f66e-f144-20ea-70d6-fc1fc805d3e9",
+		"b77c6da6-0b85-a073-e688-2c88f6e83388",
+		"3a1e84c6-7a4a-f068-9828-ad9c9372d94c"
+	],
+	"folders": [],
+	"timestamp": 1460396032076,
+	"owner": "",
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "3a1e84c6-7a4a-f068-9828-ad9c9372d94c",
+			"headers": "Authorization: Bearer 486a583d-447d-4c72-b3c6-dcb75d8e41da\nContent-Type: application/json\nAccept: application/json\nOrigin: http://localhost\n",
+			"url": "http://localhost:8080/massanger-api/api/messages",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "5d698ee3-7efe-9fda-2987-99e55452acc2",
+			"data": null,
+			"dataMode": "params",
+			"name": "API_MESSAGES",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1460396095722,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "71c6f66e-f144-20ea-70d6-fc1fc805d3e9",
+			"headers": "Authorization: Basic Y3BjbGllbnQ6Z2ZnaDJFREZINDN1Z3JmYXNoIUBFV1I2NDk3RkdERkdISDc=\nOrigin: http://localhost\n",
+			"url": "http://localhost:8080/massanger-api/oauth/token?grant_type=password",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "5d698ee3-7efe-9fda-2987-99e55452acc2",
+			"data": [
+				{
+					"key": "username",
+					"value": "cpapi",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "l3ndiN8p0IntAp1U8Er",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "API_TOKEN",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1460396032076,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "b77c6da6-0b85-a073-e688-2c88f6e83388",
+			"headers": "Authorization: Basic Y3BjbGllbnQ6Z2ZnaDJFREZINDN1Z3JmYXNoIUBFV1I2NDk3RkdERkdISDc=\nOrigin: http://localhost\n",
+			"url": "http://localhost:8080/massanger-api/oauth/token?grant_type=refresh_token",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "5d698ee3-7efe-9fda-2987-99e55452acc2",
+			"data": [
+				{
+					"key": "refresh_token",
+					"value": "b31337e6-8f64-4170-94ed-5542251cf5d1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "",
+					"value": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "API_REFRESH_TOKEN",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1460396071065,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}

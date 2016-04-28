@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:contact="urn:srv.javatigers.cp.com:domain:contact:v1_0"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:srv.javatigers.cp.com:domain:common:v1_0"
+	targetNamespace="urn:srv.javatigers.cp.com:domain:contact:v1_0"
+	elementFormDefault="qualified" attributeFormDefault="unqualified"
+	version="1">
+	<xs:import namespace="urn:srv.javatigers.cp.com:domain:common:v1_0"
+		schemaLocation="common_V1_0.xsd" />
+	<xs:element name="contact">
+		<xs:annotation>
+			<xs:documentation>Contact object with four attributes
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Contact properties to use.</xs:documentation>
+			</xs:annotation>
+			<xs:sequence>
+				<xs:element name="status" type="xs:string" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact status.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="message" type="xs:string" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact message.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="employerName" type="common:min1max15AlphaNumericWithSpaceType" nillable="true" > 
+					<xs:annotation>
+						<xs:documentation>Contact employer name.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="employementType" type="xs:string" nillable="true" maxOccurs="1"> 
+					<xs:annotation>
+						<xs:documentation>Contact employment type.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="mailingStreet" type="xs:string" minOccurs="0" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact mailing street.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="mailingState" type="xs:string" minOccurs="0" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact mailingState.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="mailingCity" type="common:min1max15AlphaNumericWithSpaceType" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact mailingCity.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="mailingCountry" type="xs:string" minOccurs="0" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact mailingCountry.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="mailingPostalCode" type="xs:string" minOccurs="0" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact status.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="homePhoneNumber" type="xs:string" maxOccurs="1" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact homePhoneNumber.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="annualIncome" type="xs:double" default="0" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact status.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="emailId" type="common:contactPersonEmail" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact emailId.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="unit" type="xs:string" minOccurs="0" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact status.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="firstName" type="xs:string" minOccurs="0" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact firstName.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="lastName" type="xs:string" minOccurs="0" nillable="true"> 
+					<xs:annotation>
+						<xs:documentation>Contact lastName.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

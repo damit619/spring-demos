@@ -1,0 +1,36 @@
+https://github.com/badalb/spring-security-oauth2-javaconfig/tree/master/oauth2-web/src/main/java/com/test/security/config
+
+http://badalb.blogspot.in/2015/04/oauth2.html
+
+https://github.com/spring-projects/spring-security-oauth/tree/master/samples/oauth2/sparklr/src/main/java/org/springframework/security/oauth/examples/sparklr/config
+
+http://projects.spring.io/spring-security-oauth/docs/oauth2.html
+
+https://github.com/spring-guides/tut-bookmarks/blob/master/security/src/main/java/bookmarks/Application.java
+https://github.com/spring-guides/tut-bookmarks
+http://stackoverflow.com/questions/29736231/how-to-add-filter-after-the-http-basicauthenticationfilter-when-using-enableaut
+
+//Slides
+http://presos.dsyer.com/decks/oauth-rest.html#slide30
+
+http://blog.e-zest.net/rest-authentication-using-oauth-2-0-resource-owner-password-flow-protocol/
+https://blog.pivotal.io/pivotal-cloud-foundry/products/securing-restful-web-services-with-oauth2
+
+@Override
+	public void configure(WebSecurity web) throws Exception {
+		// Spring Security ignores request to static resources such as CSS or JS
+		// files.
+		web.ignoring().antMatchers("/resources/**/*");
+	}
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.antMatcher("/index")
+			.authorizeRequests()
+			.antMatchers("/swagger-ui/**", "/index").permitAll()
+			.anyRequest().fullyAuthenticated()
+			.and()
+			.csrf()
+            .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/oauth/authorize"))
+            .disable();
+		
+	}

@@ -1,0 +1,298 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javatigers.oauth2</groupId>
+		<artifactId>sp-oauth2</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>massanger-api</artifactId>
+	<packaging>war</packaging>
+
+	<name>${project.artifactId}</name>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<warSourceDirectory>webapp</warSourceDirectory>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.cxf</groupId> <artifactId>cxf-xjc-plugin</artifactId> 
+				<version>${cxf-xjc-plugin.version}</version> <executions> <execution> <goals> 
+				<goal>xsdtojava</goal> </goals> </execution> </executions> <configuration> 
+				<sourceRoot>${basedir}/src/generated/</sourceRoot> <xsdOptions> <xsdOption> 
+				<extension>true</extension> <bindingFile>${basedir}/src/main/resources/jaxbbindings.xml</bindingFile> 
+				<xsd>${basedir}/src/main/resources/xsd</xsd> <extensionArgs> <extensionArg>-XJsr303Annotations</extensionArg> 
+				<extensionArg>-verbose</extensionArg> </extensionArgs> <extraargs> <extraarg>-xjc-Xts</extraarg> 
+				<extraarg>-xjc-Xfluent-api</extraarg> <extraarg>-xjc-mark-generated</extraarg> 
+				<extraarg>-verbose</extraarg> <extraarg>-xjc-Xvalue-constructor</extraarg> 
+				<extraarg>-xjc-Xannotate</extraarg> <extraarg>-xjc-Xequals</extraarg> <extraarg>-xjc-XhashCode</extraarg> 
+				<extraarg>-xjc-Xcopyable</extraarg> <extraarg>-xjc-Xmergeable</extraarg> 
+				<extraarg>-xjc-XJsr303Annotations</extraarg> <extraarg>-exceptionSuper</extraarg> 
+				<extraarg>java.lang.RuntimeException</extraarg> </extraargs> </xsdOption> 
+				</xsdOptions> </configuration> <dependencies> <dependency> <groupId>com.github.krasa</groupId> 
+				<artifactId>krasa-jaxb-tools</artifactId> <version>${krasa-jaxb-tools.version}</version> 
+				</dependency> <dependency> <groupId>org.jvnet.jaxb2_commons</groupId> <artifactId>jaxb2-fluent-api</artifactId> 
+				<version>${jaxb2-fluent-api.version}</version> </dependency> <dependency> 
+				<groupId>org.jvnet.jaxb2_commons</groupId> <artifactId>jaxb2-basics-annotate</artifactId> 
+				<version>${jaxb2-basics-annotate.version}</version> </dependency> <dependency> 
+				<groupId>org.jvnet.jaxb2_commons</groupId> <artifactId>jaxb2-value-constructor</artifactId> 
+				<version>${jaxb2-value-constructor.version}</version> </dependency> </dependencies> 
+				</plugin> -->
+			<plugin>
+				<groupId>com.github.kongchen</groupId>
+				<artifactId>swagger-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<apiSources>
+						<apiSource>
+							<springmvc>false</springmvc>
+							<locations>org.javatigers.massanger.resources</locations>
+							<schemes>http</schemes>
+							<host>localhost</host>
+							<basePath>rest/massenger-api</basePath>
+							<info>
+								<title>Swagger API Spec</title>
+								<version>v2</version>
+								<!-- use markdown here because I'm using markdown for output, if 
+									you need to use html or other markup language, you need to use your target 
+									language, and note escape your description for xml -->
+								<description>
+									Massenger REST API.
+								</description>
+								<termsOfService>
+									Put your copy right here.
+								</termsOfService>
+								<contact>
+									<email>damit619@gmail.com</email>
+									<name>Amit Dhiman</name>
+									<url>http://trantorinc.com</url>
+								</contact>
+								<license>
+									<name>Trantor INC</name>
+								</license>
+							</info>
+							<outputPath>${project.build.outputDirectory}/swagger/api.html</outputPath>
+							<swaggerDirectory>${project.build.outputDirectory}/swagger/swagger-ui</swaggerDirectory>
+						</apiSource>
+					</apiSources>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>jetty</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-maven-plugin</artifactId>
+							<version>9.2.11.v20150529</version>
+							<configuration>
+								<webApp>
+									<contextPath>/massanger-api</contextPath>
+								</webApp>
+								<contextHandlers>
+								</contextHandlers>
+								<useTestScope>true</useTestScope>
+								<useProvidedScope>true</useProvidedScope>
+								<systemPropertiesFile>src/test/resources/jettySystemProperties.properties</systemPropertiesFile>
+								<httpConnector>
+									<port>${jetty.port}</port>
+								</httpConnector>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.glassfish.jersey</groupId>
+				<artifactId>jersey-bom</artifactId>
+				<version>${jersey.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+				<exclusions>
+					<exclusion>
+						<artifactId>jersey-bean-validation</artifactId>
+						<groupId>org.glassfish.jersey.ext</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>bean-validator</artifactId>
+						<groupId>org.glassfish.hk2.external</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${validation-api.version}</version>
+			</dependency>
+			<!-- Swagger API for document JAXRS -->
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>swagger-ui</artifactId>
+				<version>${swagger.ui.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-jersey2-jaxrs</artifactId>
+				<version>1.5.4</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.lendingpoint.security</groupId>
+			<artifactId>lendingpoint-security-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Jersey core Servlet 2.x implementation -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet-core</artifactId>
+		</dependency>
+
+		<!-- Jersey JSON Jackson (2.x) entity providers support module -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+		</dependency>
+
+		<!-- Jersey extension module providing support for Spring 3 integration -->
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-spring3</artifactId>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jersey-bean-validation</artifactId>
+					<groupId>org.glassfish.jersey.ext</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>bean-validator</artifactId>
+					<groupId>org.glassfish.hk2.external</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Spring Framework-4.x -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>swagger-ui</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jersey2-jaxrs</artifactId>
+		</dependency>
+
+	</dependencies>
+	<properties>
+		<jersey.version>2.22.2</jersey.version>
+		<swagger.ui.version>2.1.3</swagger.ui.version>
+		<validation-api.version>1.1.0.Final</validation-api.version>
+		<jetty.port>8080</jetty.port>
+		<cxf-xjc-plugin.version>2.7.0</cxf-xjc-plugin.version>
+		<krasa-jaxb-tools.version>1.4</krasa-jaxb-tools.version>
+		<jaxb2-basics.version>0.11.0</jaxb2-basics.version>
+		<jaxb2-fluent-api.version>3.0</jaxb2-fluent-api.version>
+		<jaxb2-basics-annotate.version>1.0.2</jaxb2-basics-annotate.version>
+		<jaxb2-value-constructor.version>3.0</jaxb2-value-constructor.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+</project>

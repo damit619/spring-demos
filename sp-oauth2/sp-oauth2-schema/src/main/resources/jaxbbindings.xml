@@ -1,0 +1,12 @@
+<jaxb:bindings version="2.1" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+        xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <jaxb:globalBindings generateElementProperty="false">
+        		<jaxb:serializable uid="1" />
+                <!-- <jaxb:javaType name="java.util.Date" xmlType="xs:date"
+                        parseMethod="org.javatigers.massanger.config.DataTypeAdapter.unmarshal" 
+                        printMethod="org.javatigers.massanger.config.DataTypeAdapter.marshal" />
+                <jaxb:javaType name="java.util.Calendar" xmlType="xs:dateTime"
+                        parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime" 
+                        printMethod="javax.xml.bind.DatatypeConverter.printDateTime" /> -->
+        </jaxb:globalBindings>
+</jaxb:bindings> 

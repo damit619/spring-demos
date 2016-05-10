@@ -24,7 +24,7 @@
 				<!-- run as filter so it is not denied by our own access filters -->
 				<property name="runAsFilter" value="true"/>
 				<property name="basePath" value="jaxrs-cxf/api/v1" />
-					<property name="contact" value="${swagger.contact}" />
+				<property name="contact" value="${swagger.contact}" />
 				<property name="license" value="" />
 				<property name="licenseUrl" value="" />
 				<property name="resourcePackage" value="org.javatigers.jaxrs.srv.ws.services"/>
@@ -42,7 +42,6 @@
 		<jaxrs:providers>
 			<ref bean="serviceExceptionMapper"/>
 			<ref bean="webApplicationExceptionMapper" />
-			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 		<jaxrs:serviceBeans>

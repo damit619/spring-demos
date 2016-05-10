@@ -16,7 +16,7 @@ public class SpringCXFBootstrap implements WebApplicationInitializer {
 	private static final String DISPATCHER_SERVLET = "mvc";
 	private static final String CXF_SERVLET = "JAXRS-CXF-Servlet";
 
-	private static final Class<?>[] CONTEXT_ANNOTATED_CLASSES = { RootApplicationConfig.class};
+	private static final Class<?>[] CONTEXT_ANNOTATED_CLASSES = { RootApplicationConfig.class, JAXRSCXFConfig.class};
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		registerContextLoaderListener(servletContext);
@@ -43,7 +43,7 @@ public class SpringCXFBootstrap implements WebApplicationInitializer {
 	private void registerCXFServlet(ServletContext servletContext) {
 		CXFServlet cxf = new CXFServlet();
 		ServletRegistration.Dynamic jerseyRegisteration = servletContext.addServlet(CXF_SERVLET, cxf);
-		jerseyRegisteration.setInitParameter("config-location", JAXRSCXFConfig.class.getName());
+		//jerseyRegisteration.setInitParameter("config-location", JAXRSCXFConfig.class.getName());
 		jerseyRegisteration.setLoadOnStartup(1);
 		jerseyRegisteration.addMapping("/api/*");
 	}
@@ -63,6 +63,4 @@ public class SpringCXFBootstrap implements WebApplicationInitializer {
 		webApplicationContext.register(annotatedClasses);
 		return webApplicationContext;
 	}
-
-
 }

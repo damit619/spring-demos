@@ -1,63 +1,140 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="30 seconds">
-	<property name="LOGS_LOC" value=".target/" />
-	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+<configuration debug="true" scan="true" scanPeriod="10 seconds">
+	
+	<jmxConfigurator />
+
+	<property name="logback.defaultlogdir" value="logs/messageapi" />
+	<property name="logback.rollingPattern" value="%d{yyyy-MM-dd}" />
+	<property name="logback.fullPattern" value="%d [%thread][%X{req.remoteHost}][%X{req.xForwardedFor}][%X{channel}][%X{logref}] %level %logger - %msg%n" />
+	<property name="cxf.fullPattern" value="%d [%thread][%X{req.remoteHost}][%X{req.xForwardedFor}][%X{channel}][%X{logref}] [%X{type}] [%X{address}] [%X{content-type}] [%X{encoding}] [%X{exchangeId}] [%X{httpMethod}] [%X{messageId}] [%X{responseCode}] [%X{serviceName}] [%X{portName}] [%X{portTypeName}] [%X{fullContentFile}] [%X{headers}] %level %logger - %msg%n" />
+	
+	<appender name="LOGFILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logback.logdir:-${logback.defaultlogdir}}/app.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${logback.logdir:-${logback.defaultlogdir}}/app.log.${logback.rollingPattern}</fileNamePattern>
+			<!-- keep 30 days worth of history -->
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
 		<encoder>
-			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
-			</Pattern>
+			<pattern>${logback.fullPattern}</pattern>
 		</encoder>
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>TRACE</level>
-		</filter>
 	</appender>
-  	<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS_LOC}/jaxrs-cxf-app.log</file>
+	
+	<appender name="JOURNAL"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logback.logdir:-${logback.defaultlogdir}}/journal.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-		    <!-- daily rollover -->
-			<FileNamePattern>lendingpoint-security.%d{yyyy-MM-dd}.log</FileNamePattern>
-
-			<!-- keep 30 days' worth of history -->
-			<maxHistory>30</maxHistory>			
+			<!-- daily rollover -->
+			<fileNamePattern>${logback.logdir:-${logback.defaultlogdir}}/journal.log.${logback.rollingPattern}</fileNamePattern>
+			<!-- keep 30 days worth of history -->
+			<maxHistory>10</maxHistory>
 		</rollingPolicy>
-
 		<encoder>
-			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
-		</encoder> 	    
-  	</appender>
-  	<appender name="minuteRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<pattern>${logback.fullPattern}</pattern>
+		</encoder>
+	</appender>	
+	
+	<appender name="TACACT"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logback.logdir:-${logback.defaultlogdir}}/tacact.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-		    <!-- rollover every minute -->
-			<FileNamePattern>${LOGS_LOC}/jaxrs-cxf-app.%d{yyyy-MM-dd_HH}.log</FileNamePattern>
-
-			<!-- keep 30 minutes' worth of history -->
-			<maxHistory>30</maxHistory>			
+			<!-- daily rollover -->
+			<fileNamePattern>${logback.logdir:-${logback.defaultlogdir}}/tacact.log.${logback.rollingPattern}</fileNamePattern>
+			<!-- keep 30 days worth of history -->
+			<maxHistory>10</maxHistory>
 		</rollingPolicy>
-
 		<encoder>
-			<Pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</Pattern>
-		</encoder> 	    
-  	</appender>  	
-	<logger name="org.springframework" additivity="false"> 
-		<level value="TRACE" />
-		<appender-ref ref="dailyRollingFileAppender"/>
-		<appender-ref ref="minuteRollingFileAppender"/>
-		<appender-ref ref="consoleAppender" />
+			<pattern>%msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logback.logdir:-${logback.defaultlogdir}}/trace.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${logback.logdir:-${logback.defaultlogdir}}/trace.log.${logback.rollingPattern}</fileNamePattern>
+			<!-- keep 10 days worth of history -->
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${logback.fullPattern}</pattern>
+		</encoder>
+	</appender>
+	
+	
+	<appender name="PERF"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logback.logdir:-${logback.defaultlogdir}}/perflog.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${logback.logdir:-${logback.defaultlogdir}}/perflog.log.${logback.rollingPattern}</fileNamePattern>
+			<!-- keep 30 days worth of history -->
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${logback.fullPattern}</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="WSPAYLOAD"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logback.logdir:-${logback.defaultlogdir}}/wspayload.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${logback.logdir:-${logback.defaultlogdir}}/wspayload.log.${logback.rollingPattern}</fileNamePattern>
+			<!-- keep 30 days worth of history -->
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${cxf.fullPattern}</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<encoder>
+			<pattern>${logback.fullPattern}</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- logs performance figures to INFO level -->
+	<logger name="PERF" level="INFO" additivity="false">
+		<appender-ref ref="PERF" />
 	</logger>
-	<logger name="org.springframework" additivity="false"> 
-		<level value="DEBUG" />
-		<appender-ref ref="dailyRollingFileAppender"/>
-		<appender-ref ref="minuteRollingFileAppender"/>
-		<appender-ref ref="consoleAppender" />
+	
+	<logger name="org.springframework.aop.interceptor.CustomizableTraceInterceptor" level="ERROR" additivity="false">
+		<appender-ref ref="TRACE" />
 	</logger>
-	<logger name="org.springframework" additivity="false"> 
-		<level value="INFO" />
-		<appender-ref ref="dailyRollingFileAppender"/>
-		<appender-ref ref="minuteRollingFileAppender"/>
-		<appender-ref ref="consoleAppender" />
+	
+	<!-- request accounting -->
+	<logger name="TACACT" level="INFO" additivity="false">
+		<appender-ref ref="TACACT" />
 	</logger>
-	<root>
-		<level value="INFO" />
-		<level value="DEBUG" />
-		<appender-ref ref="consoleAppender" />
+
+	<!-- req/res ws logging -->
+	<logger name="org.apache.cxf.services" additivity="false">
+		<appender-ref ref="WSPAYLOAD" />
+	</logger>
+	
+	<!-- journaling events -->
+	<logger name="JOURNAL" level="INFO" additivity="false">
+		<appender-ref ref="JOURNAL" />
+	</logger>
+	
+	<logger name="org.apache.cxf.interceptor.LoggingOutInterceptor" additivity="false" level="TRACE">
+		<appender-ref ref="WSPAYLOAD" />
+	</logger>
+	
+	<logger name="org.apache.cxf.interceptor.LoggingInInterceptor" additivity="false" level="TRACE">
+		<appender-ref ref="WSPAYLOAD" />
+	</logger>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="LOGFILE" />
 	</root>
+	
 </configuration>

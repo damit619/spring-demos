@@ -9,7 +9,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 @Configuration
-@PropertySource(value = "classpath:/META-INF/srv/app-config.properties", ignoreResourceNotFound=true)
+@PropertySource(value = { "classpath:/META-INF/srv/app-config.properties", "classpath:/META-INF/srv/env-config.properties" }, ignoreResourceNotFound=true)
 @EnableAspectJAutoProxy
 public class MessagesPropertiesAndAOPConfig {
 	

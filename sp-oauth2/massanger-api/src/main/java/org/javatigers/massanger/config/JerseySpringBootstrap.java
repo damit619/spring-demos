@@ -25,7 +25,7 @@ public class JerseySpringBootstrap implements WebApplicationInitializer {
 	private static final String SPRING_SECURITY_FILTER_CHAIN_NAME = "springSecurityFilterChain";
 
 	private static final Class<?>[] CONTEXT_ANNOTATED_CLASSES = { Jersey2SpringConfiguration.class, 
-			SpringDispatcherConfig.class ,LendingPointIntializer.class};
+			SpringDispatcherConfig.class ,OAuth2CoreIntializer.class};
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		registerContextLoaderListener(servletContext);

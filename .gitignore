@@ -23,3 +23,15 @@ org.eclipse.wst.validation.prefs
 sun-jaxb.episode
 *.prefs
 *.springBeans
+/jaxrs-cxf-spring/.settings
+/jaxrs-cxf-spring/.gitignore
+/sp-oauth2/.settings
+/sp-oauth2/massanger-api/.gitignore
+/sp-oauth2/massanger-api/.settings/.jsdtscope
+/sp-oauth2/massanger-api/.settings/org.eclipse.wst.jsdt.ui.superType.container
+/sp-oauth2/massanger-api/.settings/org.eclipse.wst.jsdt.ui.superType.name
+/sp-oauth2/sp-oauth2-config/.gitignore
+/sp-oauth2/sp-oauth2-core/.gitignore
+/sp-oauth2/sp-oauth2-dao/.gitignore
+/sp-oauth2/sp-oauth2-model/.gitignore
+/sp-oauth2/sp-oauth2-schema/.gitignore

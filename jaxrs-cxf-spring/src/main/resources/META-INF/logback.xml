@@ -105,7 +105,7 @@
 		<appender-ref ref="PERF" />
 	</logger>
 	
-	<logger name="org.springframework.aop.interceptor.CustomizableTraceInterceptor" level="ERROR" additivity="false">
+	<logger name="TRACE" level="TRACE" additivity="false">
 		<appender-ref ref="TRACE" />
 	</logger>
 	

@@ -16,6 +16,7 @@ import org.javatigers.jaxrs.srv.domain.Message;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -42,6 +43,7 @@ public interface Message10RS {
 	@GET
 	@Path(value = "/{messageId}")
 	@ApiOperation("Indicators For Message Read")
+	@ApiParam(name = "messageId", required = true)
     @ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "Success OK"), @ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Bad Request") })
 	Message readMessage (@NotNull @PathParam("messageId") Long messageId);
 }

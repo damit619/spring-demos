@@ -30,11 +30,11 @@ public class UniqueAuthenticationKeyGenerator implements AuthenticationKeyGenera
 		Map<String, String> values = new LinkedHashMap<String, String>();
 		OAuth2Request authorizationRequest = authentication.getOAuth2Request();
 		
-		//[:Raghu] Old check from DefaultAuthenticationKeyGenerator
+		//Old check from DefaultAuthenticationKeyGenerator
 		/*if (!authentication.isClientOnly()) {
 			values.put(USERNAME, authentication.getName());
 		}*/
-		//[:Raghu] New check to always include username to generate a key for token
+		//New check to always include username to generate a key for token
 		if(authentication.getName() != null) {
 			values.put(USERNAME, authentication.getName());//Adding username always for token generation
 		}

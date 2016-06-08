@@ -22,13 +22,13 @@ import ch.qos.logback.classic.helpers.MDCInsertingServletFilter;
 import ch.qos.logback.classic.selector.servlet.ContextDetachingSCL;
 import ch.qos.logback.classic.selector.servlet.LoggerContextFilter;
 
-public class SpringCXFBootstrap implements WebApplicationInitializer {
+public class SpringCXFBootstrap {//implements WebApplicationInitializer {
 	
 	private static final String DISPATCHER_SERVLET = "mvc";
 	private static final String CXF_SERVLET = "JAXRS-CXF-Servlet";
 
 	private static final Class<?>[] CONTEXT_ANNOTATED_CLASSES = { RootApplicationConfig.class, JAXRSCXFConfig.class};
-	@Override
+	//@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		registerLoggingComponents(servletContext);
 		registerContextLoaderListener(servletContext);

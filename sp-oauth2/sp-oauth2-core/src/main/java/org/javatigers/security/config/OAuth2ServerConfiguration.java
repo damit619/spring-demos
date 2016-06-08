@@ -6,14 +6,12 @@ import org.javatigers.security.core.AppTokenEnhancer;
 import org.javatigers.security.core.UniqueAuthenticationKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -106,10 +104,10 @@ public class OAuth2ServerConfiguration {
 	 * 
 	 * @return PropertySourcesPlaceholderConfigurer
 	 */
-	@Bean
+	/*@Bean
 	public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
-	}
+	}*/
 	
 	/**
 	 * Register {@link MessageSource} get messages from property files.
@@ -117,12 +115,12 @@ public class OAuth2ServerConfiguration {
 	 * @return {@link MessageSource} - 
 	 * 									for internationalization of i18 messages.
 	 */
-	@Bean
+	/*@Bean
 	public MessageSource messageSource() {
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 		messageSource.setBasenames("/META-INF/i18n/messages", "/META-INF/i18n/validation-messages");
 		messageSource.setUseCodeAsDefaultMessage(Boolean.TRUE);
 		return messageSource;
-	}
+	}*/
 
 }

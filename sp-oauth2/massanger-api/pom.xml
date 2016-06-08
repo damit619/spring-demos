@@ -175,8 +175,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.lendingpoint.security</groupId>
-			<artifactId>lendingpoint-security-core</artifactId>
+			<groupId>org.javatigers.oauth2</groupId>
+			<artifactId>sp-oauth2-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->

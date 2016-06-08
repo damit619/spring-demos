@@ -1,7 +1,6 @@
 package org.javatigers.jaxrs.srv.cxf.config;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.ValidatorFactory;
@@ -19,20 +18,27 @@ import org.apache.cxf.validation.BeanValidationFeature;
 import org.apache.cxf.validation.BeanValidationProvider;
 import org.javatigers.jaxrs.srv.ws.JAXRSService;
 import org.javatigers.jaxrs.srv.ws.exceptions.JAXRSServiceExceptionMapper;
-import org.javatigers.jaxrs.srv.ws.services.Message10RS;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.env.Environment;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 @Configuration
+@ImportResource({"classpath:META-INF/cxf/cxf.xml"})
 @ComponentScan(basePackages = {"org.javatigers.jaxrs.srv.ws.services"}, includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value=JAXRSService.class))
 public class JAXRSCXFConfig {
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	@Autowired
+	private ApplicationContext context;
 	
 	@Autowired
 	private JAXRSServiceExceptionMapper serviceExceptionMapper;
@@ -43,9 +49,6 @@ public class JAXRSCXFConfig {
 	@Autowired
 	private ValidatorFactory validatorFactory;
 	
-	@Autowired
-	private Message10RS message10RS;
-	
 	@Bean(name = "cxf", destroyMethod = "shutdown")
 	public SpringBus cxf() {
 		return new SpringBus();
@@ -54,12 +57,28 @@ public class JAXRSCXFConfig {
 	@DependsOn("cxf")
 	@Bean 
 	public Server jaxRsServer() {
-		JAXRSServerFactoryBean factory = RuntimeDelegate.getInstance().createEndpoint( jaxRsApiApplication(), JAXRSServerFactoryBean.class );
-		factory.setServiceBeans( Arrays.< Object >asList(message10RS));
+		JAXRSServerFactoryBean factory = RuntimeDelegate
+					.getInstance()
+					.createEndpoint( jaxRsApiApplication(), JAXRSServerFactoryBean.class );
+		factory.setServiceBeans(getCXFRSServices ());
 		factory.setAddress( factory.getAddress() );
 		factory.setFeatures(getFeatures2 ());
-		factory.setProviders( getProviders () );
+		factory.setProviders( getProviders ());
 		return factory.create();
+	}
+	
+	/**
+	 * Get resources marked with @JAXRSService.
+	 * 
+	 * @return List <ResourceProvider>
+	 */
+	public List<Object> getCXFRSServices () {
+		List<Object> serviceBeans = new ArrayList<>();
+		for (String beanName : context.getBeanNamesForAnnotation(JAXRSService.class)) {
+				logger.info("JAXRS resource name : {}", beanName);
+                serviceBeans.add(context.getBean(beanName));
+		}
+		return serviceBeans;
 	}
 	
 	/**

@@ -11,8 +11,8 @@
 		<module>sp-oauth2-model</module>
 		<module>sp-oauth2-dao</module>
 		<module>sp-oauth2-core</module>
-		<module>sp-oauth2-schema</module>
-		<module>massanger-api</module>
+		<!-- <module>sp-oauth2-schema</module>
+		 <module>massanger-api</module> -->
 	</modules>
 	<dependencyManagement>
 		<dependencies>

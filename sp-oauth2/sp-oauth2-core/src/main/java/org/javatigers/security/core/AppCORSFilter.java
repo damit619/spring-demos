@@ -9,11 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
@@ -27,10 +27,9 @@ public class AppCORSFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     	LOGGER.debug("Application allowedOriginsStr : {}", allowedOriginsStr);
     	String[] allowedOrigins = allowedOriginsStr.split(",");
-    	
     	//Fetching and Restricting Origins
         String origin = request.getHeader("Origin");
-        if(origin != null && !origin.isEmpty()) { //If Origin is coming and not empty
+        if(origin != null && ! origin.isEmpty()) { //If Origin is coming and not empty
         	if(Arrays.asList(allowedOrigins).contains(origin)) {//Origin is in the allowed list of origins
         		response.setHeader("Access-Control-Allow-Origin", origin);
                 response.setHeader("Access-Control-Allow-Credentials", "true");
@@ -56,12 +55,15 @@ public class AppCORSFilter extends OncePerRequestFilter {
                 response.getOutputStream().write(sb.toString().getBytes());
                 return;
         	}
-        } else {//Null Origin case
-        	LOGGER.error("Null Origin is not allowed");
+        } else if (StringUtils.substringAfterLast(request.getRequestURI(), "/").equalsIgnoreCase("index")) {
+        	return;
+        }	
+        else {//Null Origin case
+        /*	LOGGER.error("Null Origin is not allowed");
         	StringBuilder sb = new StringBuilder();
             sb.append("Null origin is not allowed");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getOutputStream().write(sb.toString().getBytes());
+            response.getOutputStream().write(sb.toString().getBytes());*/
             return;
         }
         filterChain.doFilter(request, response);
@@ -81,7 +83,7 @@ public class AppCORSFilter extends OncePerRequestFilter {
 
         if (requestHeaders != null && !requestHeaders.isEmpty()) {
             List<String> headers = Arrays.asList(requestHeaders.split(","));
-            response.setHeader("Access-Control-Allow-Headers", StringUtils.collectionToCommaDelimitedString(headers));
+            response.setHeader("Access-Control-Allow-Headers", org.springframework.util.StringUtils.collectionToCommaDelimitedString(headers));
         }
         response.setHeader("Access-Control-Max-Age", "3600"); //optional
         return true;

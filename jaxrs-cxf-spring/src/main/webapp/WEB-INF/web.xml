@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee web-app_3_0.xsd"
+      version="3.0">
+	<display-name>JAXRS-API-server</display-name>
+	<distributable />
+	<env-entry>
+		<description>Logback JNDI logging context for this app</description>
+		<env-entry-name>logback/context-name</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>CP-CLIENT</env-entry-value>
+	</env-entry>
+	<env-entry>
+		<description>Logback URL for configuring logback context</description>
+		<env-entry-name>logback/configuration-resource</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>META-INF/logback.xml</env-entry-value>
+	</env-entry>
+	<filter>
+		<filter-name>LoggerContextFilter</filter-name>
+		<filter-class>ch.qos.logback.classic.selector.servlet.LoggerContextFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>MDCInsertingServletFilter</filter-name>
+		<filter-class>ch.qos.logback.classic.helpers.MDCInsertingServletFilter</filter-class>
+	</filter>
+	<listener>
+		<description>Frees the logback logging context, see: http://logback.qos.ch/manual/loggingSeparation.html</description>
+		<listener-class>ch.qos.logback.classic.selector.servlet.ContextDetachingSCL</listener-class>
+	</listener>
+	
+	<!-- Bootstrap the root application context as usual using ContextLoaderListener -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- Configure ContextLoaderListener to use AnnotationConfigWebApplicationContext 
+		instead of the default XmlWebApplicationContext -->
+	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+	<!-- Configuration locations must consist of one or more comma- or space-delimited 
+		fully-qualified @Configuration classes -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>org.javatigers.jaxrs.srv.cxf.config.RootApplicationConfig</param-value>
+	</context-param>
+	<filter>
+		<description>Spring security filter</description>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- Processes api requests -->
+	<servlet>
+		<display-name>CXF JAXRS Dispatcher</display-name>
+		<servlet-name>JAXRS-CXF-Servlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- Processes handle swagger requests -->
+	<servlet>
+		<display-name>mvc servlet</display-name>
+		<servlet-name>mvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- Configure DispatcherServlet to use AnnotationConfigWebApplicationContext 
+			instead of the default XmlWebApplicationContext -->
+		<init-param>
+			<param-name>contextClass</param-name>
+			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+		</init-param>
+		<!-- Again, config locations must consist of one or more comma- or space-delimited 
+			and fully-qualified @Configuration classes -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>org.javatigers.security.config.SpringDispatcherConfig</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mvc</servlet-name>
+		<url-pattern>/</url-pattern>
+		<url-pattern>/swagger-ui/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>JAXRS-CXF-Servlet</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping> 
+</web-app>

@@ -27,6 +27,7 @@ public class AppCORSFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     	LOGGER.debug("Application allowedOriginsStr : {}", allowedOriginsStr);
     	String[] allowedOrigins = allowedOriginsStr.split(",");
+    	String reqURI = request.getRequestURI();
     	//Fetching and Restricting Origins
         String origin = request.getHeader("Origin");
         if(origin != null && ! origin.isEmpty()) { //If Origin is coming and not empty
@@ -55,15 +56,15 @@ public class AppCORSFilter extends OncePerRequestFilter {
                 response.getOutputStream().write(sb.toString().getBytes());
                 return;
         	}
-        } else if (StringUtils.substringAfterLast(request.getRequestURI(), "/").equalsIgnoreCase("index")) {
+        } else if (StringUtils.containsAny(reqURI, "index") || StringUtils.containsAny(reqURI, "swagger-ui")) {
         	return;
         }	
         else {//Null Origin case
-        /*	LOGGER.error("Null Origin is not allowed");
+        	LOGGER.error("Null Origin is not allowed");
         	StringBuilder sb = new StringBuilder();
             sb.append("Null origin is not allowed");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getOutputStream().write(sb.toString().getBytes());*/
+            response.getOutputStream().write(sb.toString().getBytes());
             return;
         }
         filterChain.doFilter(request, response);

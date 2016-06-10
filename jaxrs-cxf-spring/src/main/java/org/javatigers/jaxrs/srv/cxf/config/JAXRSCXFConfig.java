@@ -32,64 +32,71 @@ import org.springframework.core.env.Environment;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
+import io.swagger.config.ScannerFactory;
+import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.models.Swagger;
+import io.swagger.models.auth.ApiKeyAuthDefinition;
+import io.swagger.models.auth.In;
+import io.swagger.models.auth.OAuth2Definition;
+
 @Configuration
-@ImportResource({"classpath:META-INF/cxf/cxf.xml"})
-@ComponentScan(basePackages = {"org.javatigers.jaxrs.srv.ws.services"}, includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value=JAXRSService.class))
+@ImportResource({ "classpath:META-INF/cxf/cxf.xml" })
+@ComponentScan(basePackages = {
+		"org.javatigers.jaxrs.srv.ws.services" }, includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = JAXRSService.class) )
 public class JAXRSCXFConfig {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private ApplicationContext context;
-	
+
 	@Autowired
 	private JAXRSServiceExceptionMapper serviceExceptionMapper;
-	
+
 	@Autowired
 	private Environment environment;
-	
+
 	@Autowired
 	private ValidatorFactory validatorFactory;
-	
+
 	@Bean(name = "cxf", destroyMethod = "shutdown")
 	public SpringBus cxf() {
 		return new SpringBus();
 	}
-	
+
 	@DependsOn("cxf")
-	@Bean 
+	@Bean
 	public Server jaxRsServer() {
-		JAXRSServerFactoryBean factory = RuntimeDelegate
-					.getInstance()
-					.createEndpoint( jaxRsApiApplication(), JAXRSServerFactoryBean.class );
-		factory.setServiceBeans(getCXFRSServices ());
-		factory.setAddress( factory.getAddress() );
-		factory.setFeatures(getFeatures2 ());
-		factory.setProviders( getProviders ());
+		JAXRSServerFactoryBean factory = RuntimeDelegate.getInstance().createEndpoint(jaxRsApiApplication(),
+				JAXRSServerFactoryBean.class);
+		factory.setServiceBeans(getCXFRSServices());
+		factory.setAddress(factory.getAddress());
+		factory.setFeatures(getFeatures2());
+		factory.setProviders(getProviders());
 		return factory.create();
 	}
-	
+
 	/**
 	 * Get resources marked with @JAXRSService.
 	 * 
 	 * @return List <ResourceProvider>
 	 */
-	public List<Object> getCXFRSServices () {
+	public List<Object> getCXFRSServices() {
 		List<Object> serviceBeans = new ArrayList<>();
 		for (String beanName : context.getBeanNamesForAnnotation(JAXRSService.class)) {
-				logger.info("JAXRS resource name : {}", beanName);
-                serviceBeans.add(context.getBean(beanName));
+			logger.info("JAXRS resource name : {}", beanName);
+			serviceBeans.add(context.getBean(beanName));
 		}
 		return serviceBeans;
 	}
-	
+
 	/**
 	 * support swagger 2.0 spec https://issues.apache.org/jira/browse/CXF-6555
 	 * 
 	 * @return Swagger2Feature
 	 */
-	@Bean 
+	@Bean
 	public Swagger2Feature swagger2Feature() {
-		final Swagger2Feature swagger2Feature = new Swagger2Feature();
-		//run as filter so it is not denied by our own access filters
+		final OAuth2Swagger2Feature swagger2Feature = new OAuth2Swagger2Feature();
+		// run as filter so it is not denied by our own access filters
 		swagger2Feature.setRunAsFilter(Boolean.TRUE);
 		swagger2Feature.setBasePath("jaxrs-cxf/api/v1");
 		swagger2Feature.setContact(environment.getProperty("swagger.contact"));
@@ -98,51 +105,66 @@ public class JAXRSCXFConfig {
 		swagger2Feature.setResourcePackage("org.javatigers.jaxrs.srv.ws.services");
 		swagger2Feature.setTitle(environment.getProperty("swagger.title"));
 		swagger2Feature.setDescription(environment.getProperty("swagger.description"));
-		
 		return swagger2Feature;
 	}
-	
+
+	public static class OAuth2Swagger2Feature extends Swagger2Feature {
+		
+		@Override
+		protected void addSwaggerResource(Server server) {
+			super.addSwaggerResource(server);
+			
+			BeanConfig scanner = (BeanConfig) ScannerFactory.getScanner();
+			
+			Swagger swagger = scanner.getSwagger();
+			swagger.securityDefinition("api_key", new ApiKeyAuthDefinition("api_key", In.HEADER));
+			swagger.securityDefinition("Origin", new ApiKeyAuthDefinition("http://localhost", In.HEADER));
+			swagger.securityDefinition("message_oauth",
+					new OAuth2Definition().password("http://localhost:18080/jaxrs-cxf/oauth/token"));
+		}
+	}
+
 	@Bean
-	public BeanValidationFeature beanValidationFeature () {
+	public BeanValidationFeature beanValidationFeature() {
 		BeanValidationFeature beanValidationFeature = new BeanValidationFeature();
 		beanValidationFeature.setProvider(new BeanValidationProvider(validatorFactory));
 		return beanValidationFeature;
 	}
-	
-	private List<Feature> getFeatures2 () {
+
+	private List<Feature> getFeatures2() {
 		List<Feature> features2 = new ArrayList<>();
 		LoggingFeature loggingFeature = new LoggingFeature();
 		loggingFeature.setPrettyLogging(Boolean.FALSE);
 		features2.add(new MetricsFeature());
 		features2.add(loggingFeature);
 		features2.add(swagger2Feature());
-		features2.add(beanValidationFeature ());
+		features2.add(beanValidationFeature());
 		return features2;
 	}
-	
-	private List<Object> getProviders () {
+
+	private List<Object> getProviders() {
 		List<Object> providers = new ArrayList<>();
 		providers.add(serviceExceptionMapper);
-		providers.add(webApplicationExceptionMapper ());
-		providers.add(jacksonJaxbJsonProvider ());
+		providers.add(webApplicationExceptionMapper());
+		providers.add(jacksonJaxbJsonProvider());
 		return providers;
 	}
-	
+
 	@Bean
-	public WebApplicationExceptionMapper webApplicationExceptionMapper () {
+	public WebApplicationExceptionMapper webApplicationExceptionMapper() {
 		WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();
 		webApplicationExceptionMapper.setPrintStackTrace(Boolean.TRUE);
 		webApplicationExceptionMapper.setAddMessageToResponse(Boolean.FALSE);
 		return webApplicationExceptionMapper;
 	}
-	
-	@Bean 
+
+	@Bean
 	public JaxRsApiApplication jaxRsApiApplication() {
 		return new JaxRsApiApplication();
 	}
-	
+
 	@Bean
-	public JacksonJaxbJsonProvider jacksonJaxbJsonProvider () {
-		return new JacksonJaxbJsonProvider ();
+	public JacksonJaxbJsonProvider jacksonJaxbJsonProvider() {
+		return new JacksonJaxbJsonProvider();
 	}
 }

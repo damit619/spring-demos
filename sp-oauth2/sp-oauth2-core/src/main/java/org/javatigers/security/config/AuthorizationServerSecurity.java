@@ -4,6 +4,7 @@ import org.javatigers.security.core.AppCORSFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerSecurityConfiguration;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -28,13 +29,19 @@ public class AuthorizationServerSecurity extends AuthorizationServerSecurityConf
 	
 	/**
 	 * {@inheritDoc}
+	 *  Spring Security ignores request to static resources such as CSS or JS files.
+	 */
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/index", "/index.jsp", "/swagger-ui/**", "/api/v1/api-docs/**");
+	}
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		super.configure(http);
-		http//.antMatcher("/swagger-ui/**")
-			.addFilterAfter(appCORSFilter, BasicAuthenticationFilter.class);
-			//.authorizeRequests()
-			//.antMatchers("/swagger-ui/**").permitAll();
+		//http.addFilterAfter(appCORSFilter, BasicAuthenticationFilter.class);
 	}
 }

@@ -59,16 +59,14 @@ public class ResourceServer extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		// @formatter:off	
-			http//.antMatcher("/swagger-ui/**")
-				.addFilterBefore(lendingPointCORSFilter, ChannelProcessingFilter.class)
+			http
+				//.addFilterBefore(lendingPointCORSFilter, ChannelProcessingFilter.class)
 				.authorizeRequests()
-				//.antMatchers("/swagger-ui/**").permitAll()
-				.antMatchers("/api/**")
-				.authenticated()
-				.antMatchers("/api/messages")
-				.hasRole("CREATE_USER")
-				.antMatchers("/**").hasRole("API")
 				.expressionHandler(new OAuth2WebSecurityExpressionHandler())
+				.antMatchers("/api/messages").hasRole("CREATE_USER")
+				.antMatchers("/api/*").hasRole("API")
+				.antMatchers("/index","/swagger-ui/**").permitAll()
+				
 			.and()
 				.anonymous().disable()
 				.csrf().disable()

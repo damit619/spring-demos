@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("messages")
 @Consumes(value = { MediaType.APPLICATION_JSON })
 @Produces(value = { MediaType.APPLICATION_JSON })
-@Api(value = "v1/messages", description = "The message resource.")
+@Api(value = "api/v1/messages", description = "The message resource.")
 public interface Message10RS {
 	
 	@GET

@@ -63,10 +63,10 @@
 		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	<!-- Processes handle swagger requests -->
+	<!-- Processes handle spring oauth2 requests -->
 	<servlet>
-		<display-name>mvc servlet</display-name>
-		<servlet-name>mvc</servlet-name>
+		<display-name>oauth2 servlet</display-name>
+		<servlet-name>oauth2Dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<!-- Configure DispatcherServlet to use AnnotationConfigWebApplicationContext 
 			instead of the default XmlWebApplicationContext -->
@@ -78,17 +78,28 @@
 			and fully-qualified @Configuration classes -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>org.javatigers.security.config.SpringDispatcherConfig</param-value>
+			<param-value>org.javatigers.jaxrs.srv.cxf.config.SpringDispatcherConfig</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>mvc</servlet-name>
+		<servlet-name>oauth2Dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Processes handle swagger requests -->
+	<servlet>
+		<display-name>mvc servlet</display-name>
+		<servlet-name>mvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mvc</servlet-name>
 		<url-pattern>/swagger-ui/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>JAXRS-CXF-Servlet</servlet-name>
 		<url-pattern>/api/*</url-pattern>
-	</servlet-mapping> 
+	</servlet-mapping>
 </web-app>

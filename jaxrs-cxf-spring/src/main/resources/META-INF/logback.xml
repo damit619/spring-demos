@@ -90,7 +90,19 @@
 			<pattern>${cxf.fullPattern}</pattern>
 		</encoder>
 	</appender>
-	
+	<appender name="SECURITY"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logback.logdir:-${logback.defaultlogdir}}/security.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${logback.logdir:-${logback.defaultlogdir}}/security.log.${logback.rollingPattern}</fileNamePattern>
+			<!-- keep 30 days worth of history -->
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${logback.fullPattern}</pattern>
+		</encoder>
+	</appender>	
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>ERROR</level>
@@ -131,8 +143,19 @@
 	<logger name="org.apache.cxf.interceptor.LoggingInInterceptor" additivity="false" level="TRACE">
 		<appender-ref ref="WSPAYLOAD" />
 	</logger>
-
-	<root level="INFO">
+	<!-- spring security events -->
+	<logger name="org.springframework.security.access.event.LoggerListener" level="TRACE" additivity="false">
+		<appender-ref ref="SECURITY" />
+	</logger>
+	<!-- spring security events -->
+	<logger name="org.springframework.security.authentication.event.LoggerListener" level="INFO" additivity="false">
+		<appender-ref ref="SECURITY" />
+	</logger>
+	<logger name="org.springframework.security.oauth2" level="DEBUG" additivity="false">
+		<appender-ref ref="SECURITY" />
+	</logger>
+	
+	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="LOGFILE" />
 	</root>

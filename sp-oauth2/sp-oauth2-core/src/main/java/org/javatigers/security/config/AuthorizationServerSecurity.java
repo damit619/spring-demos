@@ -42,6 +42,6 @@ public class AuthorizationServerSecurity extends AuthorizationServerSecurityConf
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		super.configure(http);
-		//http.addFilterAfter(appCORSFilter, BasicAuthenticationFilter.class);
+		http.addFilterAfter(appCORSFilter, BasicAuthenticationFilter.class);
 	}
 }

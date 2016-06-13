@@ -35,7 +35,7 @@ public class ResourceServer extends ResourceServerConfigurerAdapter {
 	 * CORS filter required origin to pass through.
 	 */
 	@Autowired
-	private AppCORSFilter lendingPointCORSFilter;
+	private AppCORSFilter appCORSFilter;
 	
 	/**
 	 * TokenService for token generations.
@@ -60,7 +60,7 @@ public class ResourceServer extends ResourceServerConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		// @formatter:off	
 			http
-				//.addFilterBefore(lendingPointCORSFilter, ChannelProcessingFilter.class)
+				.addFilterBefore(appCORSFilter, ChannelProcessingFilter.class)
 				.authorizeRequests()
 				.expressionHandler(new OAuth2WebSecurityExpressionHandler())
 				.antMatchers("/api/messages").hasRole("CREATE_USER")

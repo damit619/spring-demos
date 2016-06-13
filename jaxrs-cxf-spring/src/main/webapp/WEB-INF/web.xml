@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee web-app_3_0.xsd"
-      version="3.0">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee web-app_3_0.xsd"
+	version="3.0">
 	<display-name>JAXRS-API-server</display-name>
 	<distributable />
 	<env-entry>
@@ -19,38 +18,57 @@
 	</env-entry>
 	<filter>
 		<filter-name>LoggerContextFilter</filter-name>
-		<filter-class>ch.qos.logback.classic.selector.servlet.LoggerContextFilter</filter-class>
+		<filter-class>ch.qos.logback.classic.selector.servlet.LoggerContextFilter
+		</filter-class>
 	</filter>
 	<filter>
 		<filter-name>MDCInsertingServletFilter</filter-name>
-		<filter-class>ch.qos.logback.classic.helpers.MDCInsertingServletFilter</filter-class>
+		<filter-class>ch.qos.logback.classic.helpers.MDCInsertingServletFilter
+		</filter-class>
 	</filter>
 	<listener>
-		<description>Frees the logback logging context, see: http://logback.qos.ch/manual/loggingSeparation.html</description>
-		<listener-class>ch.qos.logback.classic.selector.servlet.ContextDetachingSCL</listener-class>
+		<description>Frees the logback logging context, see:
+			http://logback.qos.ch/manual/loggingSeparation.html</description>
+		<listener-class>ch.qos.logback.classic.selector.servlet.ContextDetachingSCL
+		</listener-class>
 	</listener>
-	
+
 	<!-- Bootstrap the root application context as usual using ContextLoaderListener -->
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener
+		</listener-class>
 	</listener>
 
 	<!-- Configure ContextLoaderListener to use AnnotationConfigWebApplicationContext 
 		instead of the default XmlWebApplicationContext -->
 	<context-param>
 		<param-name>contextClass</param-name>
-		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+		</param-value>
 	</context-param>
 	<!-- Configuration locations must consist of one or more comma- or space-delimited 
 		fully-qualified @Configuration classes -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>org.javatigers.jaxrs.srv.cxf.config.RootApplicationConfig</param-value>
+		<param-value>org.javatigers.jaxrs.srv.cxf.config.RootApplicationConfig
+		</param-value>
 	</context-param>
+
+	<!-- add the origin filter for JQuery CORS support -->
+	<filter>
+		<filter-name>ApiOriginFilter</filter-name>
+		<filter-class>org.javatigers.jaxrs.srv.util.ApiOriginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ApiOriginFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<filter>
 		<description>Spring security filter</description>
 		<filter-name>springSecurityFilterChain</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -60,25 +78,29 @@
 	<servlet>
 		<display-name>CXF JAXRS Dispatcher</display-name>
 		<servlet-name>JAXRS-CXF-Servlet</servlet-name>
-		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet
+		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<!-- Processes handle spring oauth2 requests -->
 	<servlet>
 		<display-name>oauth2 servlet</display-name>
 		<servlet-name>oauth2Dispatcher</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
 		<!-- Configure DispatcherServlet to use AnnotationConfigWebApplicationContext 
 			instead of the default XmlWebApplicationContext -->
 		<init-param>
 			<param-name>contextClass</param-name>
-			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+			</param-value>
 		</init-param>
 		<!-- Again, config locations must consist of one or more comma- or space-delimited 
 			and fully-qualified @Configuration classes -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>org.javatigers.jaxrs.srv.cxf.config.SpringDispatcherConfig</param-value>
+			<param-value>org.javatigers.jaxrs.srv.cxf.config.SpringDispatcherConfig
+			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -86,12 +108,13 @@
 		<servlet-name>oauth2Dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- Processes handle swagger requests -->
 	<servlet>
 		<display-name>mvc servlet</display-name>
 		<servlet-name>mvc</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>

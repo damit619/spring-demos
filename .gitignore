@@ -35,3 +35,12 @@ sun-jaxb.episode
 /sp-oauth2/sp-oauth2-dao/.gitignore
 /sp-oauth2/sp-oauth2-model/.gitignore
 /sp-oauth2/sp-oauth2-schema/.gitignore
+/rest-web/target/classes/META-INF/web-resources/jquery/jquery-1.11.1.js
+/rest-web/target/classes/log4j.xml
+/rest-web/target/classes/rebel.xml
+/rest-web/target/maven-archiver/pom.properties
+/rest-web/target/rest-1.0-RELEASE/WEB-INF/classes/META-INF/web-resources/jquery/jquery-1.11.1.js
+/rest-web/target/rest-1.0-RELEASE/WEB-INF/classes/log4j.xml
+/rest-web/target/rest-1.0-RELEASE/WEB-INF/classes/rebel.xml
+/rest-web/target/rest-1.0-RELEASE/WEB-INF/views/home.jsp
+/rest-web/target/test-classes/log4j.xml

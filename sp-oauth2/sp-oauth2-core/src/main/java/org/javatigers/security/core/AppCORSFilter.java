@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +29,7 @@ public class AppCORSFilter extends OncePerRequestFilter {
     	String[] allowedOrigins = allowedOriginsStr.split(",");
     	//Fetching and Restricting Origins
         String origin = request.getHeader("Origin");
+        String apiorigin = request.getHeader("apiOrigin");
         if(origin != null && ! origin.isEmpty()) { //If Origin is coming and not empty
         	if(Arrays.asList(allowedOrigins).contains(origin)) {//Origin is in the allowed list of origins
         		response.setHeader("Access-Control-Allow-Origin", origin);
@@ -45,24 +47,37 @@ public class AppCORSFilter extends OncePerRequestFilter {
                     response.setHeader("Access-Control-Expose-Headers",
                             "Content-Type, X-Requested-With, Origin, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization," +
                                     "Host, Connection, CPUser-Agent, Accept, Referer, Accept-Encoding, Accept-Language");
-                }
-        	} else {
-        		LOGGER.error("Origin not allowed with Origin: " + origin);
-        		StringBuilder sb = new StringBuilder();
-                sb.append("Not Allowed");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getOutputStream().write(sb.toString().getBytes());
-                return;
-        	}
+                	}
+        		} 
+        	//for swagger
+        	}	else if (StringUtils.isNotEmpty(apiorigin)) { //If Origin is coming and not empty
+	            	if(Arrays.asList(allowedOrigins).contains(apiorigin)) {//Origin is in the allowed list of origins
+	            		response.setHeader("Access-Control-Allow-Origin", apiorigin);
+	                    response.setHeader("Access-Control-Allow-Credentials", "true");
+	                    if (request.getMethod().equalsIgnoreCase("OPTIONS")) { //If request for OPTIONS is coming
+	                    	if (!handlePreFlight(request, response)) {
+	                    		LOGGER.error("OPTIONS pre-flight failed");
+	                    		StringBuilder sb = new StringBuilder();
+	                            sb.append("Not Allowed");
+	                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	                            response.getOutputStream().write(sb.toString().getBytes());
+	                    		return;
+	                    	}
+	                    } else {//set Access-Control-Expose-Headers to Expose only required headers
+	                        response.setHeader("Access-Control-Expose-Headers",
+	                                "Content-Type, X-Requested-With, Origin, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization," +
+	                                        "Host, Connection, CPUser-Agent, Accept, Referer, Accept-Encoding, Accept-Language");
+	                    }
+	        	} 
         } 
         else {//Null Origin case
-        	LOGGER.error("Null Origin is not allowed");
-        	StringBuilder sb = new StringBuilder();
-            sb.append("Null origin is not allowed");
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getOutputStream().write(sb.toString().getBytes());
-            return;
-        }
+	        	LOGGER.error("Null Origin is not allowed");
+	        	StringBuilder sb = new StringBuilder();
+	            sb.append("Null origin is not allowed");
+	            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	            response.getOutputStream().write(sb.toString().getBytes());
+	            return;
+	        }
         filterChain.doFilter(request, response);
     }
 

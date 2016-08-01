@@ -98,7 +98,7 @@ public class JAXRSCXFConfig {
 		final OAuth2Swagger2Feature swagger2Feature = new OAuth2Swagger2Feature();
 		// run as filter so it is not denied by our own access filters
 		swagger2Feature.setRunAsFilter(Boolean.TRUE);
-		swagger2Feature.setBasePath("jaxrs-cxf/api/v1");
+		swagger2Feature.setBasePath("jaxrs-cxf/api");
 		swagger2Feature.setContact(environment.getProperty("swagger.contact"));
 		swagger2Feature.setLicense("");
 		swagger2Feature.setLicenseUrl("");

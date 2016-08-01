@@ -1,6 +1,6 @@
 package org.javatigers.jaxrs.srv.cxf.config;
 
-import org.javatigers.security.config.OAuth2CoreIntializer;
+import org.javatigers.security.outh2.resourcesrv.anotations.config.EnableOAuth2ResourceServerJWTToken;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.interceptor.CustomizableTraceInterceptor;
@@ -12,7 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(value = { MessagesPropertiesAndAOPConfig.class, ValidationConfig.class, OAuth2CoreIntializer.class, ExceptionProviderConfig.class, JAXRSCXFConfig.class })
+@Import(value = { MessagesPropertiesAndAOPConfig.class, ValidationConfig.class, /*OAuth2CoreIntializer.class,*/ ExceptionProviderConfig.class, JAXRSCXFConfig.class })
+//@EnableSPOAuth2ResourceServer
+@EnableOAuth2ResourceServerJWTToken
 @ComponentScan(basePackages = { "org.javatigers.jaxrs.srv.service" })
 public class RootApplicationConfig {
 	

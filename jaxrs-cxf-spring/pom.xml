@@ -23,9 +23,21 @@
 		<jetty.port>18080</jetty.port>
 	</properties>
 	<dependencies>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.javatigers.oauth2</groupId>
 			<artifactId>sp-oauth2-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<exclusions>
+				Exclude Commons Logging in favor of SLF4j
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency> -->
+		<dependency>
+			<groupId>org.javatigers.oauth2</groupId>
+			<artifactId>sp-oauth2-resource-server</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
@@ -67,13 +79,18 @@
 			<artifactId>cxf-rt-rs-service-description</artifactId>
 			<version>${cxf-rt.version}</version>
 		</dependency>
-		<!-- Swagger API for document JAXRS -->
 		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-rs-security-cors</artifactId>
+			<version>${cxf-rt.version}</version>
+		</dependency>
+		<!-- Swagger API for document JAXRS -->
+		<!-- <dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>swagger-ui</artifactId>
 			<version>${swagger.ui.version}</version>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-jersey2-jaxrs</artifactId>
@@ -278,6 +295,12 @@
 									<name>Trantor INC</name>
 								</license>
 							</info>
+							<!-- <securityDefinitions>
+								<securityDefinition>
+								<name>Origin</name>
+								<type>http://localhost</type>
+								</securityDefinition>
+							</securityDefinitions> -->
 							<outputPath>${project.build.outputDirectory}/swagger/api.html</outputPath>
 							<swaggerDirectory>${project.build.outputDirectory}/swagger/swagger-ui</swaggerDirectory>
 						</apiSource>
@@ -303,7 +326,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

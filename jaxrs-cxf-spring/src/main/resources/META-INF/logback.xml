@@ -104,9 +104,9 @@
 		</encoder>
 	</appender>	
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+		<!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>ERROR</level>
-		</filter>
+		</filter> -->
 		<encoder>
 			<pattern>${logback.fullPattern}</pattern>
 		</encoder>
@@ -157,7 +157,7 @@
 	
 	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="LOGFILE" />
+		<appender-ref ref="SECURITY" />
 	</root>
 	
 </configuration>

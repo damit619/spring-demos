@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import org.javatigers.jaxrs.srv.domain.Message;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -36,14 +38,15 @@ public interface Message10RS {
 	
 	@GET
 	@ApiOperation("Return all messages.")
-    @ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "Success OK"), @ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Bad Request") })
+    @ApiImplicitParams(value={@ApiImplicitParam(name = "apiOrigin", value = "This is a sample (http://localhost)", required = true, dataType = "string", paramType = "header"),})
+	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "Success OK"), @ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Bad Request") })
 	List<Message> listMessage ();
 	
 	@Valid
 	@GET
 	@Path(value = "/{messageId}")
 	@ApiOperation("Indicators For Message Read")
-	@ApiParam(name = "messageId", required = true)
+	@ApiImplicitParams(value={@ApiImplicitParam(name = "apiOrigin", value = "http://localhost", required = true, dataType = "string", paramType = "header"),})
     @ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "Success OK"), @ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Bad Request") })
-	Message readMessage (@NotNull @PathParam("messageId") Long messageId);
+	Message readMessage (@NotNull @ApiParam(name = "messageId", required = true) @PathParam("messageId") Long messageId);
 }

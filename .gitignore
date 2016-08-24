@@ -44,3 +44,7 @@ sun-jaxb.episode
 /rest-web/target/rest-1.0-RELEASE/WEB-INF/classes/rebel.xml
 /rest-web/target/rest-1.0-RELEASE/WEB-INF/views/home.jsp
 /rest-web/target/test-classes/log4j.xml
+target
+.classpath
+.project
+.settings

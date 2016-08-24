@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Web Services API : DocusignService -->
+<definitions targetNamespace="http://soap.sforce.com/schemas/class/DocusignService"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://soap.sforce.com/schemas/class/DocusignService">
+	<types>
+		<xsd:schema elementFormDefault="qualified"
+			targetNamespace="http://soap.sforce.com/schemas/class/DocusignService">
+			<xsd:element name="AllowFieldTruncationHeader">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="allowFieldTruncation" type="xsd:boolean" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CallOptions">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="client" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="DebuggingHeader">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="categories" minOccurs="0"
+							maxOccurs="unbounded" type="tns:LogInfo" />
+						<xsd:element name="debugLevel" type="tns:LogType" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:complexType name="LogInfo">
+				<xsd:sequence>
+					<xsd:element name="category" type="tns:LogCategory" />
+					<xsd:element name="level" type="tns:LogCategoryLevel" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:simpleType name="LogCategory">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Db" />
+					<xsd:enumeration value="Workflow" />
+					<xsd:enumeration value="Validation" />
+					<xsd:enumeration value="Callout" />
+					<xsd:enumeration value="Apex_code" />
+					<xsd:enumeration value="Apex_profiling" />
+					<xsd:enumeration value="Visualforce" />
+					<xsd:enumeration value="System" />
+					<xsd:enumeration value="All" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="LogCategoryLevel">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="None" />
+					<xsd:enumeration value="Internal" />
+					<xsd:enumeration value="Finest" />
+					<xsd:enumeration value="Finer" />
+					<xsd:enumeration value="Fine" />
+					<xsd:enumeration value="Debug" />
+					<xsd:enumeration value="Info" />
+					<xsd:enumeration value="Warn" />
+					<xsd:enumeration value="Error" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="LogType">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="None" />
+					<xsd:enumeration value="Debugonly" />
+					<xsd:enumeration value="Db" />
+					<xsd:enumeration value="Profiling" />
+					<xsd:enumeration value="Callout" />
+					<xsd:enumeration value="Detail" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:element name="DebuggingInfo">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="debugLog" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SessionHeader">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sessionId" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:simpleType name="ID">
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="18" />
+					<xsd:pattern value="[a-zA-Z0-9]{18}" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="address">
+				<xsd:complexContent>
+					<xsd:extension base="tns:location">
+						<xsd:sequence>
+							<xsd:element name="city" type="xsd:string" />
+							<xsd:element name="country" type="xsd:string" />
+							<xsd:element name="countryCode" type="xsd:string" />
+							<xsd:element name="geocodeAccuracy" type="xsd:string" />
+							<xsd:element name="postalCode" type="xsd:string" />
+							<xsd:element name="state" type="xsd:string" />
+							<xsd:element name="stateCode" type="xsd:string" />
+							<xsd:element name="street" type="xsd:string" />
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="location">
+				<xsd:sequence>
+					<xsd:element name="latitude" type="xsd:double" />
+					<xsd:element name="longitude" type="xsd:double" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="DocuSignAppIdTags">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="parameters" type="xsd:string"
+							nillable="true" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="DocuSignAppIdTagsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="result" type="xsd:string" nillable="true" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="DocuSignAttachmentTags">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="parameters" type="xsd:string"
+							nillable="true" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="DocuSignAttachmentTagsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="result" type="xsd:string" nillable="true" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SaveDocusign">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="parameters" type="xsd:string"
+							nillable="true" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SaveDocusignResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="result" type="xsd:string" nillable="true" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="savePaymentInfo">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="paymentParameters" type="xsd:string"
+							nillable="true" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="savePaymentInfoResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="result" type="xsd:string" nillable="true" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</types>
+	<!-- Message for the header parts -->
+	<message name="Header">
+		<part name="AllowFieldTruncationHeader" element="tns:AllowFieldTruncationHeader" />
+		<part name="CallOptions" element="tns:CallOptions" />
+		<part name="DebuggingHeader" element="tns:DebuggingHeader" />
+		<part name="DebuggingInfo" element="tns:DebuggingInfo" />
+		<part name="SessionHeader" element="tns:SessionHeader" />
+	</message>
+	<!-- Operation Messages -->
+	<message name="DocuSignAppIdTagsRequest">
+		<part element="tns:DocuSignAppIdTags" name="parameters" />
+	</message>
+	<message name="DocuSignAppIdTagsResponse">
+		<part element="tns:DocuSignAppIdTagsResponse" name="parameters" />
+	</message>
+	<message name="DocuSignAttachmentTagsRequest">
+		<part element="tns:DocuSignAttachmentTags" name="parameters" />
+	</message>
+	<message name="DocuSignAttachmentTagsResponse">
+		<part element="tns:DocuSignAttachmentTagsResponse" name="parameters" />
+	</message>
+	<message name="SaveDocusignRequest">
+		<part element="tns:SaveDocusign" name="parameters" />
+	</message>
+	<message name="SaveDocusignResponse">
+		<part element="tns:SaveDocusignResponse" name="parameters" />
+	</message>
+	<message name="savePaymentInfoRequest">
+		<part element="tns:savePaymentInfo" name="parameters" />
+	</message>
+	<message name="savePaymentInfoResponse">
+		<part element="tns:savePaymentInfoResponse" name="parameters" />
+	</message>
+	<portType name="DocusignServicePortType">
+		<operation name="DocuSignAppIdTags">
+			<input message="tns:DocuSignAppIdTagsRequest" />
+			<output message="tns:DocuSignAppIdTagsResponse" />
+		</operation>
+		<operation name="DocuSignAttachmentTags">
+			<input message="tns:DocuSignAttachmentTagsRequest" />
+			<output message="tns:DocuSignAttachmentTagsResponse" />
+		</operation>
+		<operation name="SaveDocusign">
+			<input message="tns:SaveDocusignRequest" />
+			<output message="tns:SaveDocusignResponse" />
+		</operation>
+		<operation name="savePaymentInfo">
+			<input message="tns:savePaymentInfoRequest" />
+			<output message="tns:savePaymentInfoResponse" />
+		</operation>
+	</portType>
+	<binding name="DocusignServiceBinding" type="tns:DocusignServicePortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="DocuSignAppIdTags">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:header use="literal" part="SessionHeader" message="tns:Header" />
+				<soap:header use="literal" part="CallOptions" message="tns:Header" />
+				<soap:header use="literal" part="DebuggingHeader"
+					message="tns:Header" />
+				<soap:header use="literal" part="AllowFieldTruncationHeader"
+					message="tns:Header" />
+				<soap:body use="literal" parts="parameters" />
+			</input>
+			<output>
+				<soap:header use="literal" part="DebuggingInfo" message="tns:Header" />
+				<soap:body use="literal" />
+			</output>
+		</operation>
+		<operation name="DocuSignAttachmentTags">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:header use="literal" part="SessionHeader" message="tns:Header" />
+				<soap:header use="literal" part="CallOptions" message="tns:Header" />
+				<soap:header use="literal" part="DebuggingHeader"
+					message="tns:Header" />
+				<soap:header use="literal" part="AllowFieldTruncationHeader"
+					message="tns:Header" />
+				<soap:body use="literal" parts="parameters" />
+			</input>
+			<output>
+				<soap:header use="literal" part="DebuggingInfo" message="tns:Header" />
+				<soap:body use="literal" />
+			</output>
+		</operation>
+		<operation name="SaveDocusign">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:header use="literal" part="SessionHeader" message="tns:Header" />
+				<soap:header use="literal" part="CallOptions" message="tns:Header" />
+				<soap:header use="literal" part="DebuggingHeader"
+					message="tns:Header" />
+				<soap:header use="literal" part="AllowFieldTruncationHeader"
+					message="tns:Header" />
+				<soap:body use="literal" parts="parameters" />
+			</input>
+			<output>
+				<soap:header use="literal" part="DebuggingInfo" message="tns:Header" />
+				<soap:body use="literal" />
+			</output>
+		</operation>
+		<operation name="savePaymentInfo">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:header use="literal" part="SessionHeader" message="tns:Header" />
+				<soap:header use="literal" part="CallOptions" message="tns:Header" />
+				<soap:header use="literal" part="DebuggingHeader"
+					message="tns:Header" />
+				<soap:header use="literal" part="AllowFieldTruncationHeader"
+					message="tns:Header" />
+				<soap:body use="literal" parts="parameters" />
+			</input>
+			<output>
+				<soap:header use="literal" part="DebuggingInfo" message="tns:Header" />
+				<soap:body use="literal" />
+			</output>
+		</operation>
+	</binding>
+	<service name="DocusignServiceService">
+		<documentation></documentation>
+		<port binding="tns:DocusignServiceBinding" name="DocusignService">
+			<soap:address
+				location="https://cs10.salesforce.com/services/Soap/class/DocusignService" />
+		</port>
+	</service>
+</definitions>
